@@ -75,7 +75,7 @@ public class Rat_Fsm : FiniteStateMachine
             () => { _pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
         State GoThrowTunelB = new State("GoThrowTunel",
-            () => { _pathFeeder.target=_blackbord._tunelEntryA;_pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel PointGraph");_pathFeeder.enabled=true;_pathFeeder.path=true;}, // write on enter logic inside {}
+            () => { _pathFeeder.target=_blackbord._tunelEntryA;_pathFeeder.enabled=true;_pathFeeder.path=true;}, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => { _pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
@@ -102,11 +102,11 @@ public class Rat_Fsm : FiniteStateMachine
 
         Transition InTunelA = new Transition("InTunelA",
                    () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_blackbord._tunelEntryA);}, // write the condition checkeing code in {}
-                   () => {_pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel PointGraph"); }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
+                   () => {_pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel"); }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
          Transition InTunelB = new Transition("InTunelB",
                    () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_blackbord._tunelEntryB);}, // write the condition checkeing code in {}
-                   () => { _pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel PointGraph");}  // write the on trigger code in {} if any. Remove line if no on trigger action needed
+                   () => { _pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel");}  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
 
         Transition ExitTunelA = new Transition("ExitTunelA",
@@ -138,4 +138,6 @@ public class Rat_Fsm : FiniteStateMachine
 
         initialState=WaitForSeconds;
     }
+
+        
 }
