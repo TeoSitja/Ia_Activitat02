@@ -6,8 +6,9 @@ public class Rat_Blackbord : MonoBehaviour
 {
     public GameObject _cheese;
     public GameObject _home;
-    public GameObject _tunelEntryA;
-    public GameObject _tunelEntryB;
+
+    public GameObject[] _tunelEntries;
+   
 
     public string _tunelTag="TUNEL";
     public float _timeToGo;
@@ -15,15 +16,23 @@ public class Rat_Blackbord : MonoBehaviour
     public float _toReachTunel;
     public float _toReachObjective;
 
-    public GameObject ExitTunel(GameObject tunelEntry){
-        if (tunelEntry==_tunelEntryA)
-        {
-            return _tunelEntryB;
-        }
-        if (tunelEntry==_tunelEntryB)
-        {
-            return _tunelEntryA;
-        }
-        return _home;
+  
+
+    public GameObject ExitTunel(){
+        
+       float distanceToObjective=SensingUtils.DistanceToTarget(gameObject,_cheese);
+       GameObject exitTunel=null;
+
+       foreach (var item in _tunelEntries)
+       {
+                if (distanceToObjective>=SensingUtils.DistanceToTarget(item,_cheese))
+          {
+                distanceToObjective=SensingUtils.DistanceToTarget(item,_cheese);
+                exitTunel=item;
+          }
+          
+       }
+       
+       return exitTunel;
     }
 }

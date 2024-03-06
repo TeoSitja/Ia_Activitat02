@@ -10,6 +10,7 @@ public class Rat_Fsm : FiniteStateMachine
     PathFeeder _pathFeeder;
     Rat_Blackbord _blackbord;
     float _currentTime;
+    GameObject _actuallTunelEntry;
 
     
     
@@ -52,33 +53,30 @@ public class Rat_Fsm : FiniteStateMachine
             () => {_pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
 
-        State ReachTunelA = new State("ReachTunelA",
-            () => { _pathFeeder.target=_blackbord._tunelEntryA; _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
+        State ReachTunel = new State("ReachTunel",
+            () => { _pathFeeder.target=_actuallTunelEntry; _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => {_pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
-        State ReachTunelB = new State("ReachTunelB",
-            () => { _pathFeeder.target=_blackbord._tunelEntryB; _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
-            () => { }, // write in state logic inside {}
-            () => {_pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
-        );
-
+        
         State ReturnHome = new State("ReturnHome",
             () => { _pathFeeder.target=_blackbord._home; _pathFeeder.enabled=true;_pathFeeder.path=true;}, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => { _pathFeeder.enabled=false;_pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
 
-        State GoThrowTunelA = new State("GoThrowTunel",
-            () => { _pathFeeder.target=_blackbord._tunelEntryB;_pathFeeder.enabled=true;_pathFeeder.path=true;}, // write on enter logic inside {}
+        State GoThrowTunel = new State("GoThrowTunel",
+            () => {_actuallTunelEntry=_blackbord.ExitTunel(); _pathFeeder.target=_actuallTunelEntry;_pathFeeder.enabled=true;_pathFeeder.path=true; }, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => { _pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
-        State GoThrowTunelB = new State("GoThrowTunel",
-            () => { _pathFeeder.target=_blackbord._tunelEntryA;_pathFeeder.enabled=true;_pathFeeder.path=true;}, // write on enter logic inside {}
+
+        State GoThrowTunelBackHome = new State("GoThrowTunelBackHome",
+            () => { _actuallTunelEntry=_blackbord._tunelEntries[0]; _pathFeeder.target=_actuallTunelEntry;_pathFeeder.enabled=true;_pathFeeder.path=true; }, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => { _pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
+
 
         Transition SecondsWaited = new Transition("SecondsWaited",
             () => { return _blackbord._timeToGo <= _currentTime; }, // write the condition checkeing code in {}
@@ -97,43 +95,49 @@ public class Rat_Fsm : FiniteStateMachine
 
          Transition CantReachByWalking = new Transition("CantReachByWalking",
                    () => { return _pathFeeder.currentPath.CompleteState==PathCompleteState.Error;}, // write the condition checkeing code in {}
+                   () => {_actuallTunelEntry=_blackbord._tunelEntries[0]; }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
+        );
+
+        Transition CantReturnHomeByWalking = new Transition("CantReturnHomeByWalking",
+                   () => { return _pathFeeder.currentPath.CompleteState==PathCompleteState.Error;}, // write the condition checkeing code in {}
                    () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
+         
 
-        Transition InTunelA = new Transition("InTunelA",
-                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_blackbord._tunelEntryA);}, // write the condition checkeing code in {}
+        Transition InTunelEntry = new Transition("InTunelEntry",
+                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_actuallTunelEntry)&&_actuallTunelEntry==_blackbord._tunelEntries[0];}, // write the condition checkeing code in {}
                    () => {_pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel"); }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
-         Transition InTunelB = new Transition("InTunelB",
-                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_blackbord._tunelEntryB);}, // write the condition checkeing code in {}
-                   () => { _pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel");}  // write the on trigger code in {} if any. Remove line if no on trigger action needed
-        );
 
-        Transition ExitTunelA = new Transition("ExitTunelA",
-                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_blackbord._tunelEntryB);}, // write the condition checkeing code in {}
+         Transition InForeignTunelEntry = new Transition("InTunelEntry",
+                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_actuallTunelEntry);}, // write the condition checkeing code in {}
+                   () => {_pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Tunel"); }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
+        );
+     
+
+        Transition ExitTunel = new Transition("ExitTunel",
+                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_actuallTunelEntry);}, // write the condition checkeing code in {}
                    () => { _pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Grid Graph");}  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
-        Transition ExitTunelB = new Transition("ExitTunelB",
-                   () => { return _blackbord._toReachTunel>=SensingUtils.DistanceToTarget(gameObject,_blackbord._tunelEntryA);}, // write the condition checkeing code in {}
-                   () => {_pathFeeder.seeker.graphMask.value=GraphMask.FromGraphName("Grid Graph"); }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
-        );
+     
 
 
 
-        AddStates(WaitForSeconds,GoToCheese,ReturnHome,ReachTunelA,GoThrowTunelA,GoThrowTunelB,ReachTunelB);
+        AddStates(WaitForSeconds,GoToCheese,ReturnHome,ReachTunel,GoThrowTunel,GoThrowTunelBackHome);
+       
         AddTransition(WaitForSeconds,SecondsWaited,GoToCheese);
         AddTransition(GoToCheese,InObjective,ReturnHome);
         AddTransition(ReturnHome,InHome,WaitForSeconds);
 
 
-        AddTransition(GoToCheese,CantReachByWalking,ReachTunelA);
-         AddTransition(ReachTunelA,InTunelA,GoThrowTunelA);
-        AddTransition(GoThrowTunelA,ExitTunelA,GoToCheese);
+        AddTransition(GoToCheese,CantReachByWalking,ReachTunel);
+         AddTransition(ReachTunel,InTunelEntry,GoThrowTunel);
+        AddTransition(GoThrowTunel,ExitTunel,GoToCheese);
         
-        //harcode point B
-        AddTransition(ReturnHome,CantReachByWalking,ReachTunelB);
-        AddTransition(ReachTunelB,InTunelB,GoThrowTunelB);
-        AddTransition(GoThrowTunelB,ExitTunelB,ReturnHome);
+      
+        AddTransition(ReturnHome,CantReturnHomeByWalking,ReachTunel);
+        AddTransition(ReachTunel,InForeignTunelEntry,GoThrowTunelBackHome);
+        AddTransition(GoThrowTunelBackHome,ExitTunel,ReturnHome);
 
 
         initialState=WaitForSeconds;
