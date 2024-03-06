@@ -186,6 +186,7 @@ public class Rat_Fsm : FiniteStateMachine
         AddTransition(WaitForSeconds,SecondsWaited,GoToCheese);
         AddTransition(GoToCheese,InObjective,ReturnHome);
         AddTransition(ReturnHome,InHome,WaitForSeconds);
+        AddTransition(GoToCheeseFromTunel,InObjective,ReturnHome);
 
         // AddTransition(GoToCheese,InWater,GoToCheese);
         // AddTransition(GoToCheese,OutOfWater,GoToCheese);
@@ -203,9 +204,9 @@ public class Rat_Fsm : FiniteStateMachine
         AddTransition(GoToCheeseFromTunel,CantReachWithYhisTunel,ReachRecalculatedTunel);
         
         AddTransition(ReachRecalculatedTunel,InForeignTunelEntry,GoThrowRecalculatedTunel);
-        AddTransition(GoThrowRecalculatedTunel,ExitTunel,GoToCheese);
+        AddTransition(GoThrowRecalculatedTunel,ExitTunel,GoToCheeseFromTunel);
 
-        AddTransition(ReturnHome,CantReturnHomeByWalking,GoToCheeseFromTunel);
+        AddTransition(ReturnHome,CantReturnHomeByWalking,ReachTunel);
         AddTransition(ReachTunel,InForeignTunelEntry,GoThrowTunelBackHome);
         AddTransition(GoThrowTunelBackHome,ExitTunel,ReturnHome);
 
