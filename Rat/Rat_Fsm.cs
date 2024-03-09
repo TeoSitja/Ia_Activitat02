@@ -6,7 +6,7 @@ using Pathfinding;
 [CreateAssetMenu(fileName = "Rat_Fsm", menuName = "Finite State Machines/Rat_Fsm", order = 1)]
 public class Rat_Fsm : FiniteStateMachine
 {
-    PathFeeder _pathFeeder;
+    PathFeeder_activitat02 _pathFeeder;
     Rat_Blackbord _blackbord;
     SteeringContext _steeringContext;
     float _currentTime;
@@ -21,7 +21,7 @@ public class Rat_Fsm : FiniteStateMachine
 
     public override void OnEnter()
     {
-        _pathFeeder=GetComponent<PathFeeder>();
+        _pathFeeder=GetComponent<PathFeeder_activitat02>();
         _blackbord=GetComponent<Rat_Blackbord>();
         _sprite=GetComponent<SpriteRenderer>();
         _steeringContext=GetComponent<SteeringContext>();
@@ -123,17 +123,17 @@ public class Rat_Fsm : FiniteStateMachine
         );
 
          Transition CantReachByWalking = new Transition("CantReachByWalking",
-                   () => { return _pathFeeder.currentPath.CompleteState==PathCompleteState.Error;}, // write the condition checkeing code in {}
-                   () => {_actuallTunelEntry=_blackbord._tunelEntries[0]; }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
+                   () => { return _pathFeeder.currentPath.error;}, // write the condition checkeing code in {}
+                   () => {_pathFeeder.currentPath.Error();   _actuallTunelEntry=_blackbord._tunelEntries[0]; }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
 
         Transition CantReturnHomeByWalking = new Transition("CantReturnHomeByWalking",
-                   () => { return _pathFeeder.currentPath.CompleteState==PathCompleteState.Error;}, // write the condition checkeing code in {}
+                   () => { return _pathFeeder.currentPath.error;}, // write the condition checkeing code in {}
                    () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
 
           Transition CantReachWithYhisTunel = new Transition("CantReachWithYhisTunel",
-                   () => {  return _pathFeeder.currentPath.CompleteState==PathCompleteState.Error;}, // write the condition checkeing code in {}
+                   () => {  return _pathFeeder.currentPath.error;}, // write the condition checkeing code in {}
                    () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
            Transition CanReachWithYhisTunel = new Transition("CanReachWithYhisTunel",
