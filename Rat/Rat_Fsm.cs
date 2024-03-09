@@ -50,7 +50,7 @@ public class Rat_Fsm : FiniteStateMachine
         );
 
          */
-  State WaitForSeconds = new State("WaitForSeconds",
+        State WaitForSeconds = new State("WaitForSeconds",
             () => { }, // write on enter logic inside {}
             () => {_currentTime+=Time.deltaTime;}, // write in state logic inside {}
             () => { _currentTime=0;}  // write on exit logic inisde {}  
@@ -105,7 +105,7 @@ public class Rat_Fsm : FiniteStateMachine
         );
 
 
-
+//------------------------------------------------
 
         Transition SecondsWaited = new Transition("SecondsWaited",
             () => { return _blackbord._timeToGo <= _currentTime; }, // write the condition checkeing code in {}
