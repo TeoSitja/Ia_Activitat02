@@ -12,12 +12,7 @@ public class Rat_Blackbord : MonoBehaviour
 
     public GameObject[] _tunelEntries;
 
-    private PathFeeder _pathFeeder;
-
-    private void OnEnable() {
-        _pathFeeder.GetComponent<PathFeeder>();
-    }
-   
+    
 
     public string _tunelTag="TUNEL";
     public float _timeToGo;
