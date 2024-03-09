@@ -47,67 +47,16 @@ public class Cat_Fsm : FiniteStateMachine
             () => { _currentTime=0;}  // write on exit logic inisde {}  
         );
 
-         State GoToFish = new State("GoToFish",
-            () => { _pathFeeder.target=_cat_BlackBoard._objective; _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
-            () => { }, // write in state logic inside {}
-            () => {_pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
-        );
-
-        State ReturnHome = new State("ReturnHome",
-            () => { _pathFeeder.target=_cat_BlackBoard._home; _pathFeeder.enabled=true;_pathFeeder.path=true;}, // write on enter logic inside {}
-            () => { }, // write in state logic inside {}
-            () => { _pathFeeder.enabled=false;_pathFeeder.path=false;}  // write on exit logic inisde {}  
-        );
-
         Transition SecondsWaited = new Transition("SecondsWaited",
             () => { return _cat_BlackBoard._timeToWait <= _currentTime; }, // write the condition checkeing code in {}
             () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
  );
 
-        Transition InObjective = new Transition("InObjective",
-                   () => { return _cat_BlackBoard._toReachObjective>=SensingUtils.DistanceToTarget(gameObject,_cat_BlackBoard._objective);}, // write the condition checkeing code in {}
-                   () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
-        );
-
-        Transition InHome = new Transition("InHome",
-                   () => { return _cat_BlackBoard._toReachHome>=SensingUtils.DistanceToTarget(gameObject,_cat_BlackBoard._home);}, // write the condition checkeing code in {}
-                   () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
-        );
 
 
-        AddStates(WaitForSeconds,GoToFish,ReturnHome);
-        AddTransition(WaitForSeconds,SecondsWaited,GoToFish);
-        AddTransition(GoToFish,InObjective,ReturnHome);
-        AddTransition(ReturnHome,InHome,WaitForSeconds);
+
 
         initialState=WaitForSeconds;
-
-        /* STAGE 2: create the transitions with their logic(s)
-         * ---------------------------------------------------
-
-        Transition varName = new Transition("TransitionName",
-            () => { }, // write the condition checkeing code in {}
-            () => { }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
-        );
-
-        */
-
-
-        /* STAGE 3: add states and transitions to the FSM 
-         * ----------------------------------------------
-            
-        AddStates(...);
-
-        AddTransition(sourceState, transition, destinationState);
-
-         */ 
-
-
-        /* STAGE 4: set the initial state
-         
-        initialState = ... 
-
-         */
 
     }
 }
