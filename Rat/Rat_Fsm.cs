@@ -1,7 +1,6 @@
 using FSMs;
 using UnityEngine;
 using Steerings;
-using UnityEditor;
 using Pathfinding;
 
 [CreateAssetMenu(fileName = "Rat_Fsm", menuName = "Finite State Machines/Rat_Fsm", order = 1)]
@@ -100,7 +99,7 @@ public class Rat_Fsm : FiniteStateMachine
         );
 
          State ReachRecalculatedTunel = new State("ReachRecalculatedTunel",
-            () => { _pathFeeder.target=_blackbord._tunelEntries[2]; _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
+            () => { _pathFeeder.target=_blackbord.ReCalculateTunel(_actuallTunelEntry); _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => {_pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
