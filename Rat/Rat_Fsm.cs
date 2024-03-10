@@ -87,7 +87,7 @@ public class Rat_Fsm : FiniteStateMachine
         );
 
        State GoThrowRecalculatedTunel = new State("GoThrowRecalculatedTunel",
-            () => {_actuallTunelEntry=_blackbord._tunelEntries[2]; _pathFeeder.target=_actuallTunelEntry;_pathFeeder.enabled=true;_pathFeeder.path=true;  }, // write on enter logic inside {}
+            () => {_actuallTunelEntry=_blackbord.ReCalculateTunel(_actuallTunelEntry); _pathFeeder.target=_actuallTunelEntry;_pathFeeder.enabled=true;_pathFeeder.path=true;  }, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => { _pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
@@ -99,7 +99,7 @@ public class Rat_Fsm : FiniteStateMachine
         );
 
          State ReachRecalculatedTunel = new State("ReachRecalculatedTunel",
-            () => { _pathFeeder.target=_blackbord.ReCalculateTunel(_actuallTunelEntry); _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
+            () => {  _pathFeeder.target=_actuallTunelEntry; _pathFeeder.enabled=true; _pathFeeder.path=true;}, // write on enter logic inside {}
             () => { }, // write in state logic inside {}
             () => {_pathFeeder.enabled=false; _pathFeeder.path=false;}  // write on exit logic inisde {}  
         );
@@ -124,7 +124,7 @@ public class Rat_Fsm : FiniteStateMachine
 
          Transition CantReachByWalking = new Transition("CantReachByWalking",
                    () => { return _pathFeeder.currentPath.error;}, // write the condition checkeing code in {}
-                   () => {_pathFeeder.currentPath.Error();   _actuallTunelEntry=_blackbord._tunelEntries[0]; }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
+                   () => { _actuallTunelEntry=_blackbord._tunelEntries[0]; }  // write the on trigger code in {} if any. Remove line if no on trigger action needed
         );
 
         Transition CantReturnHomeByWalking = new Transition("CantReturnHomeByWalking",

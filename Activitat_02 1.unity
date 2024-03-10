@@ -3539,6 +3539,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 865932708}
     - target: {fileID: 6141154396651311450, guid: 87b2d254b546f294cb49aa21e09ee1d7, type: 3}
+      propertyPath: _toReachTunel
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6141154396651311450, guid: 87b2d254b546f294cb49aa21e09ee1d7, type: 3}
       propertyPath: _tunelEntries.Array.data[0]
       value: 
       objectReference: {fileID: 209243298}

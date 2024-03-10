@@ -48,19 +48,12 @@ public class Rat_Blackbord : MonoBehaviour
 
        foreach (var item in _tunelEntries)
        {
-        if (item!=lastTunel)
-        {
-           if (distanceToObjective>=SensingUtils.DistanceToTarget(item,_cheese))
-          {
-            
-                distanceToObjective=SensingUtils.DistanceToTarget(item,_cheese);
-                exitTunel=item;
-          }
-                
-        }
-          
-       }
-       
+         if (item != lastTunel&& item!=_tunelEntries[0])
+         {
+               distanceToObjective = SensingUtils.DistanceToTarget(item, _cheese);
+               exitTunel = item;
+         }
+      }
        return exitTunel;
     }
 }
