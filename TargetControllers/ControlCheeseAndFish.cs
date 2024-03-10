@@ -34,7 +34,7 @@ public class ControlCheeseAndFish : MonoBehaviour
                 wantedPosition.z = transform.position.z;
                 chesePrefab.transform.position = wantedPosition;
             }
-            else if (Input.GetKey("b"))
+            else if (Input.GetKey("f"))
             {
                 var position = cam.ScreenToWorldPoint(Input.mousePosition);
                 position.z = 0;
