@@ -13,8 +13,7 @@ public class ControlCheeseAndFish : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        //chesePrefab = Resources.Load<GameObject>("CHEESE");
-        //fishPrefab = Resources.Load<GameObject>("FISH");
+
     }
 
     // Update is called once per frame
@@ -24,19 +23,24 @@ public class ControlCheeseAndFish : MonoBehaviour
         {
             if (Input.GetKey("c"))
             {
-                var position = cam.ScreenToWorldPoint(Input.mousePosition);
-                position.z = 0;
+                //var position = cam.ScreenToWorldPoint(Input.mousePosition);
+                //position.z = 0;
 
-                GameObject sam = GameObject.Instantiate(chesePrefab);
-                sam.transform.position = position;
+                //GameObject sam = GameObject.Instantiate(chesePrefab);
+                //sam.transform.position = position;
+
+                Vector3 click = Input.mousePosition;
+                Vector3 wantedPosition = Camera.main.ScreenToWorldPoint(new Vector3(click.x, click.y, 1f));
+                wantedPosition.z = transform.position.z;
+                chesePrefab.transform.position = wantedPosition;
             }
             else if (Input.GetKey("b"))
             {
                 var position = cam.ScreenToWorldPoint(Input.mousePosition);
                 position.z = 0;
 
-                GameObject sam = GameObject.Instantiate(fishPrefab);
-                sam.transform.position = position;
+                GameObject fish = GameObject.Instantiate(fishPrefab);
+                fish.transform.position = position;
             }
         }
     }
